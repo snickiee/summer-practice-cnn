@@ -45,7 +45,6 @@ def create_trainval_batch(class_name):
     for fn in glob(img_orig_folder_name+'/*.'+'png'):
 
         img_cv = cv2.imread(fn)
-        #img_cv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
 
         img_array.append(img_cv)
         img_counter+=1
@@ -55,7 +54,7 @@ def create_trainval_batch(class_name):
 
 #разделение датасета
 
-    # split into train/val/test sets
+    #разделение в train/val/test 
     x_train,x_remain  = train_test_split(img_array, shuffle=True, test_size=p_val+p_test, random_state=0)
     x_val, x_test = train_test_split(x_remain, shuffle=True, test_size=p_test/(p_val+p_test) , random_state=0)
 
@@ -63,19 +62,17 @@ def create_trainval_batch(class_name):
     print("x_val:"+str(len(x_val)))
     print("x_test:"+str(len(x_test)))
 
-    # train/val/test save locations
+    # куда сохранять
     save_train = root_dir + 'train\\' + class_name + '\\'
     save_val = root_dir + 'val\\' + class_name + '\\'
     save_test = root_dir + 'test\\' + class_name + '\\'
 
-    # save images to train/val/test folders
     save_images(save_train,class_name,x_train)
     save_images(save_val, class_name, x_val)
     save_images(save_test, class_name, x_test)
 
 
 def save_images(save_dir, class_name, x_set):
-    # Create directory if it doesn't exist
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
@@ -101,10 +98,7 @@ def save_images(save_dir, class_name, x_set):
 #main
 if __name__=="__main__":
 
-    # retrieve list of available classes
     class_list = create_class_list(class_list_filename)
 
     for category in class_list:
         create_trainval_batch(category)
-
-'''******************************************************************************************************************'''
